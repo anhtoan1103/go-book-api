@@ -26,10 +26,45 @@ var movies []Movie
 
 // define the getMovies function to get all movies, we need w to receive the response after processing and need r to send to request. 
 func getMovies(w http.ResponseWriter, r *http.Request) {
+	// set the header Content-type to point out the type of the data is application or json.
 	w.Header().Set("Content-type", "application/json")
 	// if we have the database here, we need to query this from the database.
 	// this code will change in the next part.
+	// this will encode the movies and then use NewEncoder to write to w and use json to return to client.
+	json.NewEncoder(w).Encode(movies)	
+}
+
+func deleteMovie(w http.ResponseWriter, r *http.Request) {
+	// set the header Content-type to point out the type of the data is application or json.
+	w.Header().Set("Content-type", "application/json")
+	// get the list params from the url.
+	params := mux.Vars(r)
+
+	for index, item := range movies {
+		if item.ID ==  params["id"] {
+			movies = append(movies[:index], movies[index+1:]...)
+			break
+		}
+	}
 	json.NewEncoder(w).Encode(movies)
+}
+
+func getMovie(w http.ResponseWriter, r *http.Request) {
+	// set the header Content-type to point out the type of the data is application or json.
+	w.Header().Set("Content-type", "application/json")
+	// get the list params from the url.
+	params := mux.Vars(r)
+
+	for _, item := range movies {
+		if item.ID == params["id"] {
+			json.NewEncoder(w).Encode(item)
+			break
+		}
+	}
+}
+
+func createMovie(w http.ResponseWriter, r *http.Request) {
+	
 }
 
 func main() {
