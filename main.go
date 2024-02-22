@@ -72,7 +72,9 @@ func createMovie(w http.ResponseWriter, r *http.Request) {
 	// receive data from body and decode it to movie variable.
 	_ = json.NewDecoder(r.Body).Decode(&movie)
 	// generate a random ID for the new movie that receive from body.
+	// if the movieId exists?
 	movie.ID = strconv.Itoa(rand.Intn(100000000))
+
 	// append new movie to movies
 	movies = append(movies, movie)
 	// return the new movie to the response from view the result.
@@ -98,7 +100,7 @@ func updateMovie(w http.ResponseWriter, r *http.Request) {
 			movie.ID = params["id"]
 			// append new movie to movies
 			movies = append(movies, movie)
-			// send data to responseWriter
+			// send data to responseWriter to response the updated movies
 			json.NewEncoder(w).Encode(movies)
 			return
 		}
